@@ -3,6 +3,8 @@ const fs=require('fs'),path=require('path');
 const ROOT=path.join(__dirname,'..');
 const BASE=require('./base');
 const EX=new Set(['tools','.git','node_modules']);
+// sufixos de endpoint da API (comparados com indexOf), nao caminhos de asset
+const ALLOW=new Map([['js/shim.js',/^\/(auth|profile)\//]]);
 const files=[];
 (function walk(d){for(const f of fs.readdirSync(d,{withFileTypes:true})){const p=path.join(d,f.name);
  if(f.isDirectory()){if(EX.has(f.name))continue;walk(p);continue;}
@@ -23,6 +25,8 @@ for(const p of files){
     if(BASE&&val.startsWith(BASE+'/'))continue;       // ja tem base
     if(raw.startsWith('\u0000'))continue;             // token interno
     if(m[0].length<=3)continue;                       // "/" ou '/' solto
+    const al=ALLOW.get(rel.split(path.sep).join('/'));
+    if(al&&al.test(val))continue;                     // sufixo de endpoint, nao URL
     if(!hits.has(val))hits.set(val,new Set());
     hits.get(val).add(rel);
   }

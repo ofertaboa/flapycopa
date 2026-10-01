@@ -43,7 +43,13 @@ const FIX=[
   ["fetch(`/api/", "fetch(`"+ORIGIN+"/api/"],
   ['href="/api/', 'href="'+ORIGIN+'/api/'],
   ['src="/api/', 'src="'+ORIGIN+'/api/'],
+  // flags gravadas no HTML estatico: precisam ser mutaveis (o shim liga apos o login)
+  ['const isLoggedIn = false;', 'let isLoggedIn = false;'],
+  ['const IS_AUTH = false;', 'let IS_AUTH = false;'],
 ];
+
+// qualquer "/api/..." ainda solto (fetchJson, apiPost, href, ...) -> origem (CORS: *)
+const APIRE=/(["'`])\/api\//g;
 
 let changed=0;
 const DOCS=/\.(toml|md|bat)$/i;
@@ -56,7 +62,11 @@ for(const p of files){
   if(DOCS.test(p)||path.basename(p)==='_redirects'){
     v=v.replace(/https?:\/\/localhost:%PORT%[^\s"']*/g,'http://localhost:%PORT%'+(NEW||'')+'/');
     if(CUR)v=v.split(CUR).join(TK);
-    v=v.split(TK).join(NEW);
+  // 3c) shim: destravamento de audio + sessao local (idempotente)
+  if(/\.html$/i.test(p) && !v.includes('/js/shim.js')){
+    v=v.replace(/<\/body>/i,'    <script src="'+TK+'/js/shim.js"></script>\n</body>');
+  }
+  v=v.split(TK).join(NEW);
     if(v!==before){fs.writeFileSync(p,v);changed++;console.log('PATCH  '+rel);}
     continue;
   }
@@ -68,6 +78,8 @@ for(const p of files){
   }
   // 2) correcoes pontuais
   for(const [x,y] of FIX) if(x!==y&&v.includes(x)) v=v.split(x).join(y);
+  // 2b) qualquer "/api/..." restante -> origem (ex.: fetchJson("/api/..."), apiPost("/api/..."))
+  v=v.replace(APIRE,(m,q)=>q+ORIGIN+'/api/');
   // 3) caminhos absolutos que ainda nao tem base -> ganham TK
   v=v.replace(/(\b(?:href|src|action|poster)\s*=\s*")(\/[^"]*)/g,(m,pre,rest)=>{
     if(rest.startsWith('//')||rest.startsWith(TK)||rest.startsWith('/api/'))return m;

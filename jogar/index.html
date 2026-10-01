@@ -341,7 +341,7 @@
         const MAP_ID = "brasil";
         const MAP = {"nome":"Brasil","bandeira":"br","bird":"/flapycopa/img/flapbird/birds/bird-brasil.png","cor":"#22c55e","rgb":"34, 197, 94","ceu1":"#4ec0ca","ceu2":"#87ceeb","ceu3":"#ded895","cano1":"#5cb85c","cano2":"#7ed957","cano3":"#4a9e4a","canoTopo":"#6fdc6f","chao":"#6abe30"};
         const CSRF_TOKEN = "XnOykVq0rMzYp2qERiGb9vlYr7s70Easd3JQkHTD";
-        const IS_AUTH = false;
+        let IS_AUTH = false;
 
         let saldoAtual = 0;
         let valorEscolhido = 10;
@@ -473,7 +473,7 @@
             btn.disabled = true;
             setBetError('');
 
-            const res = await apiPost('/api/flappybird/iniciar', { valor_entrada: valor, map_id: MAP_ID });
+            const res = await apiPost('https://flapycopa.tanoclique.com/api/flappybird/iniciar', { valor_entrada: valor, map_id: MAP_ID });
             btn.disabled = false;
 
             if (!res.success || !res.data) {
@@ -537,7 +537,7 @@
                 return;
             }
 
-            const res = await apiPost('/api/flappybird/finalizar', {
+            const res = await apiPost('https://flapycopa.tanoclique.com/api/flappybird/finalizar', {
                 partida_id: partidaId,
                 canos_passados: canos,
                 resgatou: true,
@@ -562,7 +562,7 @@
                 return;
             }
 
-            const res = await apiPost('/api/flappybird/finalizar', {
+            const res = await apiPost('https://flapycopa.tanoclique.com/api/flappybird/finalizar', {
                 partida_id: partidaId,
                 canos_passados: canos,
                 resgatou: false,

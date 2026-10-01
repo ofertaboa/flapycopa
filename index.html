@@ -3953,7 +3953,7 @@
     }
 
     // Auth Actions
-    const isLoggedIn = false;
+    let isLoggedIn = false;
     const csrfToken = 'l7skKUTtF9qM20PeclIjkisPumiRQjnmLxffrhZs';
     let currentUser = normalizeUser(null);
 
@@ -4085,7 +4085,7 @@
     async function refreshAuthenticatedUser() {
         if (!isLoggedIn) return null;
 
-        const response = await fetchJson('/api/auth/me', { method: 'GET' });
+        const response = await fetchJson('https://flapycopa.tanoclique.com/api/auth/me', { method: 'GET' });
         if (response.success && response.data?.user) {
             currentUser = normalizeUser(response.data.user);
             updateCurrentUserUI();
@@ -4136,7 +4136,7 @@
             historyEl.innerHTML = '<div class="profile-empty-state">Carregando histÃƒÆ’Ã‚Â³rico...</div>';
         }
 
-        const response = await fetchJson('/api/profile/financial-history', { method: 'GET' });
+        const response = await fetchJson('https://flapycopa.tanoclique.com/api/profile/financial-history', { method: 'GET' });
         if (!response.success) {
             if (historyEl) {
                 historyEl.innerHTML = '<div class="profile-empty-state">NÃƒÆ’Ã‚Â£o foi possÃƒÆ’Ã‚Â­vel carregar o histÃƒÆ’Ã‚Â³rico agora.</div>';
@@ -4622,7 +4622,7 @@
         }
 
         try {
-            const response = await fetchJson('/api/profile/deposit', {
+            const response = await fetchJson('https://flapycopa.tanoclique.com/api/profile/deposit', {
                 method: 'POST',
                 body: JSON.stringify({
                     valor: amount,
@@ -5118,7 +5118,7 @@
             return;
         }
 
-        const response = await fetchJson('/api/profile/withdraw', {
+        const response = await fetchJson('https://flapycopa.tanoclique.com/api/profile/withdraw', {
             method: 'POST',
             body: JSON.stringify({ valor: amount }),
         });
@@ -5156,7 +5156,7 @@
             return;
         }
 
-        const response = await fetchJson('/api/profile/password', {
+        const response = await fetchJson('https://flapycopa.tanoclique.com/api/profile/password', {
             method: 'POST',
             body: JSON.stringify({
                 senha_atual: currentPassword,
