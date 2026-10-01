@@ -62,11 +62,7 @@ for(const p of files){
   if(DOCS.test(p)||path.basename(p)==='_redirects'){
     v=v.replace(/https?:\/\/localhost:%PORT%[^\s"']*/g,'http://localhost:%PORT%'+(NEW||'')+'/');
     if(CUR)v=v.split(CUR).join(TK);
-  // 3c) shim: destravamento de audio + sessao local (idempotente)
-  if(/\.html$/i.test(p) && !v.includes('/js/shim.js')){
-    v=v.replace(/<\/body>/i,'    <script src="'+TK+'/js/shim.js"></script>\n</body>');
-  }
-  v=v.split(TK).join(NEW);
+    v=v.split(TK).join(NEW);
     if(v!==before){fs.writeFileSync(p,v);changed++;console.log('PATCH  '+rel);}
     continue;
   }
@@ -111,6 +107,10 @@ for(const p of files){
       else return m;
       return q+u+q;
     });
+  }
+  // 3c) shim: destravamento de audio + sessao local (idempotente)
+  if(/(^|[\\/])index\.html$/i.test(p) && !v.includes('/js/shim.js')){
+    v=v.replace(/<\/body>/i,'    <script src="'+TK+'/js/shim.js"></script>\n</body>');
   }
   v=v.split(TK).join(NEW);
   if(v.includes(TK)){console.log('ATENCAO token sobrou em '+rel);}
