@@ -1,0 +1,6 @@
+# FlapyCopa — Netlify / Cloudflare Pages
+# Nao ha redirects no site original: / e /jogar sao arquivos reais com index.html.
+# Rotas inexistentes caem no 404.html (servido automaticamente pelas duas plataformas).
+#
+# Antes de publicar aqui:  node tools\rebase.js --base=
+# (o GitHub Pages usa o base path definido em tools\base.js)

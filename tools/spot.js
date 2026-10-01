@@ -1,0 +1,17 @@
+const fs=require('fs');
+const t=fs.readFileSync('index.html','utf8');
+const i=t.indexOf("bird: '");
+console.log('index : '+JSON.stringify(t.slice(i,i+90)));
+const j=fs.readFileSync('jogar/index.html','utf8');
+const k=j.indexOf('"bird":');
+console.log('jogar : '+JSON.stringify(j.slice(k,k+100)));
+const b=t.indexOf('badgeIcon');
+console.log('badge : '+JSON.stringify(t.slice(b,b+70)));
+const g=t.indexOf('gif:');
+console.log('gif   : '+JSON.stringify(t.slice(g,g+70)));
+const f=t.indexOf('favicon');
+console.log('fav   : '+JSON.stringify(t.slice(f-40,f+90)));
+const d=t.indexOf('disable-devtool');
+console.log('dtool : '+JSON.stringify(t.slice(d-60,d+60)));
+const fo=t.indexOf('fonts.googleapis');
+console.log('fonts : '+JSON.stringify(t.slice(fo-80,fo+120)));

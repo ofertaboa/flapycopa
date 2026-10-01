@@ -1,0 +1,16 @@
+# Netlify — FlapyCopa (site 100% estatico: HTML/JS/CSS/imagens locais)
+# Antes de publicar no Netlify/Cloudflare rode:  node tools\rebase.js --base=
+# (o GitHub Pages usa o base path definido em tools\base.js)
+#
+# Publique arrastando a pasta em app.netlify.com ou conectando o repositorio.
+
+[build]
+  publish = "."
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Todas as rotas ja existem como arquivo estatico real:
+#   /       -> index.html
+#   /jogar  -> jogar/index.html
+# Qualquer outra rota cai no 404.html (servido automaticamente).
